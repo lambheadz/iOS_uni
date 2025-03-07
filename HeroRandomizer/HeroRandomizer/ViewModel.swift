@@ -8,6 +8,10 @@
 import Foundation
 
 struct Hero: Decodable {
+    let name: String
+    let biography: Biography
+    let powerstats: PowerStats
+    let appearance: Appearance
     let images: Image
     var imageUrl: URL? {
         URL(string: images.md)
@@ -16,12 +20,30 @@ struct Hero: Decodable {
     struct Image: Decodable {
         let md: String
     }
+    
+    struct Biography: Decodable {
+        let placeOfBirth: String
+    }
+    
+    struct Appearance: Decodable {
+        let gender: String
+        let race: String?
+        let height: [String]
+        let weight: [String]
+    }
+    
+    struct PowerStats: Decodable {
+        let intelligence: Int
+        let power: Int
+        let strength: Int
+        let speed: Int
+        let durability: Int
+    }
 }
 
 final class ViewModel: ObservableObject {
     @Published var selectedHero: Hero?
 
-    //  MARK: - Methods
     func fetchHero() async {
         guard
             let url = URL(string: "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/all.json")
